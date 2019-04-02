@@ -1,0 +1,79 @@
+LAMMPS (12 Mar 2014)
+USER-CUDA mode is enabled (../lammps.cpp:445)
+
+
+package cuda gpu/node 1 0
+package omp 2 force/neigh
+using multi-threaded neighbor list subroutines
+prefer double precision OpenMP force kernels
+
+units 		metal
+dimension	3
+boundary	p	p	p
+atom_style	atomic
+lattice fcc 4.36 origin 0 0 0 orient x 1 0 0 orient y 0 1 0
+Lattice spacing in x,y,z = 4.36 4.36 4.36
+region		whole block 0 10 0 10 0 10
+create_box	2 whole
+Created orthogonal box = (0 0 0) to (43.6 43.6 43.6)
+  1 by 1 by 1 MPI processor grid
+#region		3dbox block INF INF INF INF INF INF
+create_atoms 	1 box
+Created 4000 atoms
+lattice fcc 4.36 origin 0.25 0.25 0.25 orient x 1 0 0 orient y 0 1 0
+Lattice spacing in x,y,z = 4.36 4.36 4.36
+create_atoms	2 box
+Created 4000 atoms
+
+mass 1 12
+mass 2 28
+
+pair_style	tersoff
+pair_coeff	* * SiC_1994.tersoff C Si
+
+velocity all create 300 102456 rot yes dist gaussian
+
+thermo 10000
+thermo_style custom step pe lx ly lz vol press step temp epair emol etotal
+min_style cg
+
+timestep 0.0005
+
+fix 1 all npt temp 300.0 300.0 0.1 iso 1.0 1.0 1
+
+dump	 1 all atom 500 dump.lammpstrj
+
+run 50000
+No /omp style for force computation currently active
+Memory usage per processor = 5.72642 Mbytes
+Step PotEng Lx Ly Lz Volume Press Step Temp E_pair E_mol TotEng 
+       0   -51293.902         43.6         43.6         43.6    82881.856   -115976.44        0          300   -51293.902            0   -50983.717 
+   10000   -51183.784    43.137232    43.137232    43.137232    80270.658    126.65649    10000    300.12857   -51183.784            0   -50873.466 
+   20000   -51181.665    43.145598    43.145598    43.145598     80317.37     535.9718    20000    296.83597   -51181.665            0    -50874.75 
+   30000   -51183.511    43.139581    43.139581    43.139581    80283.771    1392.7092    30000    299.65881   -51183.511            0   -50873.678 
+   40000   -51183.612    43.142346    43.142346    43.142346    80299.211   -2401.6185    40000    298.99818   -51183.612            0   -50874.462 
+   50000   -51180.018    43.136802    43.136802    43.136802    80268.257    1512.1884    50000    300.35476   -51180.018            0   -50869.465 
+Loop time of 603.199 on 1 procs for 50000 steps with 8000 atoms
+
+Pair  time (%) = 496.79 (82.3592)
+Neigh time (%) = 0 (0)
+Comm  time (%) = 12.2187 (2.02565)
+Outpt time (%) = 1.99848 (0.331314)
+Other time (%) = 92.1919 (15.2838)
+
+Nlocal:    8000 ave 8000 max 8000 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:    17695 ave 17695 max 17695 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:    0 ave 0 max 0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:  368000 ave 368000 max 368000 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 368000
+Ave neighs/atom = 46
+Neighbor list builds = 0
+Dangerous builds = 0
+#minimize 1e-25 1e-25 5000 10000
+
+

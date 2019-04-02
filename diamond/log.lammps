@@ -1,0 +1,78 @@
+LAMMPS (12 Mar 2014)
+# package cuda gpu/node 1 0
+package omp 2 force/neigh
+using multi-threaded neighbor list subroutines
+prefer double precision OpenMP force kernels
+
+units 		metal
+dimension	3
+boundary	p	p	p
+atom_style	atomic
+lattice diamond 3.5656 orient x 1 0 0 orient y 0 1 0
+Lattice spacing in x,y,z = 3.5656 3.5656 3.5656
+region		whole block 0 10 0 10 0 10
+create_box	1 whole
+Created orthogonal box = (0 0 0) to (35.656 35.656 35.656)
+  1 by 1 by 1 MPI processor grid
+region		box block INF INF INF INF INF INF
+create_atoms 1 region box
+Created 8000 atoms
+
+mass 1 12
+
+
+pair_style	tersoff
+pair_coeff	* * BNC.tersoff C
+
+velocity all create 300 102456 rot yes dist gaussian
+
+thermo 10000
+thermo_style custom step pe lx ly lz vol press step temp epair emol etotal
+min_style cg
+
+timestep 0.0005
+
+fix 1 all npt temp 300.0 300.0 0.1 iso 1.0 1.0 1.0
+
+dump	 1 all atom 500 dump.lammpstrj
+
+minimize 1e-25 1e-25 5000 10000
+WARNING: Resetting reneighboring criteria during minimization (../min.cpp:173)
+No /omp style for force computation currently active
+Memory usage per processor = 5.5668 Mbytes
+Step PotEng Lx Ly Lz Volume Press Step Temp E_pair E_mol TotEng 
+       0    -52037.06       35.656       35.656       35.656    45331.268     286104.9        0          300    -52037.06            0   -51726.874 
+       3    -52037.06       35.656       35.656       35.656    45331.268     286104.9        3          300    -52037.06            0   -51726.874 
+Loop time of 0.475088 on 1 procs for 3 steps with 8000 atoms
+
+Minimization stats:
+  Stopping criterion = linesearch alpha is zero
+  Energy initial, next-to-last, final = 
+        -52037.0598361     -52037.0598362     -52037.0598362
+  Force two-norm initial, final = 9.35687e-12 3.71474e-08
+  Force max component initial, final = 1.83409e-13 7.34251e-10
+  Final line search alpha, max atom move = 0.5 3.67126e-10
+  Iterations, force evaluations = 3 4
+
+Pair  time (%) = 0.45374 (95.5066)
+Neigh time (%) = 0 (0)
+Comm  time (%) = 0.00114775 (0.241586)
+Outpt time (%) = 0 (0)
+Other time (%) = 0.0202 (4.25185)
+
+Nlocal:    8000 ave 8000 max 8000 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:    6725 ave 6725 max 6725 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:    0 ave 0 max 0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:  368000 ave 368000 max 368000 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 368000
+Ave neighs/atom = 46
+Neighbor list builds = 0
+Dangerous builds = 0
+#run 50000
+
+

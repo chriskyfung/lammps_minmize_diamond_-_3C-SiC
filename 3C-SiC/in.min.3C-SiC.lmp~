@@ -1,0 +1,39 @@
+
+
+package cuda gpu/node 1 0
+package omp 2 force/neigh
+
+units 		metal
+dimension	3
+boundary	p	p	p
+atom_style	atomic
+lattice fcc 4.36 origin 0 0 0 orient x 1 0 0 orient y 0 1 0
+region		whole block 0 10 0 10 0 10
+create_box	2 whole
+#region		3dbox block INF INF INF INF INF INF
+create_atoms 	1 box
+lattice fcc 4.36 origin 0.25 0.25 0.25 orient x 1 0 0 orient y 0 1 0
+create_atoms	2 box 
+
+mass 1 12 
+mass 2 28
+
+pair_style	tersoff
+pair_coeff	* * SiCGe.tersoff C Si
+
+velocity all create 300 102456 rot yes dist gaussian
+
+thermo 10000
+thermo_style custom step pe lx ly lz vol press step temp epair emol etotal
+min_style cg 
+
+timestep 0.0005
+
+fix 1 all npt temp 300.0 300.0 0.1 iso 1.0 1.0 1
+
+dump	 1 all atom 500 dump.lammpstrj
+
+run 50000
+#minimize 1e-25 1e-25 5000 10000 
+
+

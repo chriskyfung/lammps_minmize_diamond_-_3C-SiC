@@ -1,0 +1,25 @@
+LAMMPS (12 Mar 2014)
+
+
+#package cuda gpu/node 1 0
+package omp 2 force/neigh
+using multi-threaded neighbor list subroutines
+prefer double precision OpenMP force kernels
+
+units 		metal
+dimension	3
+boundary	p	p	p
+atom_style	atomic
+lattice fcc 4.36 origin 0 0 0 orient x 1 0 0 orient y 0 1 0
+Lattice spacing in x,y,z = 4.36 4.36 4.36
+region		whole block 0 10 0 10 0 10
+create_box	1 whole
+Created orthogonal box = (0 0 0) to (43.6 43.6 43.6)
+  1 by 1 by 1 MPI processor grid
+region		3dbox block INF INF INF INF INF INF
+create_atoms 	1 region 3dbox
+Created 4000 atoms
+lattice fcc 4.36 origin 0.25 0.25 0.25 orient x 1 0 0 orient y 0 1 0
+Lattice spacing in x,y,z = 4.36 4.36 4.36
+create_atoms	2 region 3dbox
+ERROR: Invalid atom type in create_atoms command (../create_atoms.cpp:148)

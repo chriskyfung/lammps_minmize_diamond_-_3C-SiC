@@ -1,0 +1,35 @@
+LAMMPS (12 Mar 2014)
+USER-CUDA mode is enabled (../lammps.cpp:445)
+
+
+package cuda gpu/node 1 0
+package omp 2 force/neigh
+using multi-threaded neighbor list subroutines
+prefer double precision OpenMP force kernels
+
+units 		metal
+dimension	3
+boundary	p	p	p
+atom_style	atomic
+lattice fcc 4.36
+Lattice spacing in x,y,z = 4.36 4.36 4.36
+region		whole block 0 10 0 10 0 10
+lattice diamond 3.5656 orient x 1 0 0 orient y 0 1 0
+Lattice spacing in x,y,z = 3.5656 3.5656 3.5656
+create_box	1 whole
+Created orthogonal box = (0 0 0) to (43.6 43.6 43.6)
+  1 by 1 by 1 MPI processor grid
+region		box block INF INF INF INF INF INF
+create_atoms 1 region box
+Created 14725 atoms
+
+mass 1 12
+
+
+pair_style	tersoff
+pair_coeff	* * SiC_Erhart-Albe.tersoff C
+
+velocity all create 300 102456 rot yes dist gaussian
+
+fix 1 npt all temp 300.0 300.0 0.05 iso 1.0 1.0 0.5
+ERROR: Could not find fix group ID (../modify.cpp:659)
