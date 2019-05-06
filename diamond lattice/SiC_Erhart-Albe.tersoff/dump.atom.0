@@ -1,0 +1,41 @@
+ITEM: TIMESTEP
+0
+ITEM: NUMBER OF ATOMS
+32
+ITEM: BOX BOUNDS ss ss ss
+-0.00043668 4.36724
+-0.00043668 4.36724
+-0.00043668 4.36724
+ITEM: ATOMS id type x y z vx vy vz fx fy fz c_pe 
+1 1 0 0 0 0 0 0 nan nan nan nan 
+2 1 2.1834 2.1834 0 0 0 0 nan nan nan nan 
+3 1 2.1834 0 2.1834 0 0 0 nan nan nan nan 
+4 1 0 2.1834 2.1834 0 0 0 nan nan nan nan 
+5 1 4.3668 0 0 0 0 0 -nan -nan -nan 963.096 
+6 1 4.3668 2.1834 2.1834 0 0 0 nan nan nan nan 
+7 1 0 4.3668 0 0 0 0 -nan -nan -nan 963.096 
+8 1 2.1834 4.3668 2.1834 0 0 0 nan nan nan nan 
+9 1 4.3668 4.3668 0 0 0 0 nan nan nan nan 
+10 1 0 0 4.3668 0 0 0 -nan -nan -nan 963.096 
+11 1 2.1834 2.1834 4.3668 0 0 0 nan nan nan nan 
+12 1 4.3668 0 4.3668 0 0 0 nan nan nan nan 
+13 1 0 4.3668 4.3668 0 0 0 nan nan nan nan 
+14 1 4.3668 4.3668 4.3668 0 0 0 -nan -nan -nan 963.096 
+15 1 0 0 0 0 0 0 nan nan nan nan 
+16 1 2.1834 2.1834 0 0 0 0 nan nan nan nan 
+17 1 2.1834 0 2.1834 0 0 0 nan nan nan nan 
+18 1 0 2.1834 2.1834 0 0 0 nan nan nan nan 
+19 1 4.3668 0 0 0 0 0 -nan -nan -nan 963.096 
+20 1 4.3668 2.1834 2.1834 0 0 0 nan nan nan nan 
+21 1 0 4.3668 0 0 0 0 -nan -nan -nan 963.096 
+22 1 2.1834 4.3668 2.1834 0 0 0 nan nan nan nan 
+23 1 4.3668 4.3668 0 0 0 0 nan nan nan nan 
+24 1 0 0 4.3668 0 0 0 -nan -nan -nan 963.096 
+25 1 2.1834 2.1834 4.3668 0 0 0 nan nan nan nan 
+26 1 4.3668 0 4.3668 0 0 0 nan nan nan nan 
+27 1 0 4.3668 4.3668 0 0 0 nan nan nan nan 
+28 1 4.3668 4.3668 4.3668 0 0 0 -nan -nan -nan 963.096 
+29 2 1.0917 1.0917 1.0917 0 0 0 -nan -nan -nan nan 
+30 2 3.2751 3.2751 1.0917 0 0 0 -nan -nan -nan nan 
+31 2 3.2751 1.0917 3.2751 0 0 0 -nan -nan -nan nan 
+32 2 1.0917 3.2751 3.2751 0 0 0 -nan -nan -nan nan 

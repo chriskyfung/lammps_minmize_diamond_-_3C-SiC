@@ -1,0 +1,110 @@
+shell mkdir $p
+log $p/lammps.log
+print ' '
+print ' '
+print 'Style $s : $p'
+print ' '
+
+units 		metal
+dimension	3
+boundary	s	s	s
+atom_style	charge
+atom_modify map array sort 1000 5.0
+
+# Create a tetrahedral component (1/8) of unit cell of diamond cubic 
+
+#lattice diamond 3.571 orient x 1 1 1 orient y -1 0 1 orient z 1 -2 1 origin 0 0 0
+lattice fcc 4.3668 origin 0 0 0 orient x 1 0 0 orient y 0 1 0
+
+region whole block 0 1 0 1 0 1
+create_box 2 whole
+create_atoms 1 region whole
+
+# create Si atoms for SiC workpiece 
+create_atoms	1 region whole 
+
+# offset origin for 1/4 unit cell for C atoms
+lattice fcc 4.3668 origin 0.25 0.25 0.25 orient x 1 0 0 orient y 0 1 0
+create_atoms	2 region whole 
+
+
+# define the mass of atoms
+mass 1 28 #.0107 # C (g/mol)
+mass 2 12 #.0107 # C (g/mol)
+
+# Determine the potential been used from the input variable
+
+if "$s == tersoff"  then "pair_style	tersoff" & 
+	"pair_coeff	* * ../../potentials/$p Si C " &
+elif "$s == meam" & 
+  "pair_style	meam" & 
+  "pair_coeff	* *  ../../potentials/library.meam C ../../potentials/$p C" &
+elif "$s == airebo" & 
+  "pair_style	airebo" & 
+  "pair_coeff	* *  ../../potentials/$p C" &
+elif "$s == rebo" & 
+  "pair_style	rebo" & 
+  "pair_coeff	* *  ../../potentials/$p C" &
+elif "$s == lcbop" & 
+  "pair_style	lcbop" & 
+  "pair_coeff	* *  ../../potentials/$p C" &
+elif "$s == comb3" & 
+  "pair_style	comb3 polar_off" & 
+  "pair_coeff	* *  ../../potentials/ffield.comb3 C" &
+elif "$s == atomistica" & 
+  "pair_style	atomistica $p" &
+  "pair_coeff	* *  C" &
+elif "$s == atomisticax" & 
+  "pair_style	atomistica $P $p.dat" &
+  "pair_coeff	* * C" &
+elif "$s == hybrid_overlay" & 
+  "pair_style	hybrid/overlay comb3 polar_off tersoff" &
+  "pair_coeff 	* *  comb3  noCC.comb3 C" &
+  "pair_coeff	* *  tersoff ../../potentials/SiC_Erhart-Albe.tersoff  C" &  
+else &
+ "pair_style	tersoff/zbl" & 
+ "pair_coeff	* *  ../../potentials/$p C"
+
+# 
+#  variable ijx equal x[1]-x[6]
+#  variable jkx equal x[2]-x[1]
+#  variable kf equal fx[2]*fx[2]+fy[2]*fy[2]+fz[2]*fz[2]
+#  variable jf equal fx[1]*fx[1]+fy[1]*fy[1]+fz[1]*fz[1]
+#  variable if equal fx[6]*fx[6]+fy[6]*fy[6]+fz[6]*fz[6]
+#  
+ 
+ # Simulation settings
+ 
+compute pe all pe/atom  
+
+thermo 1
+# thermo_style custom step epair v_ijx v_jkx v_if v_jf v_kf
+
+neighbor 2.0 nsq
+
+
+
+# Moving atom a1 toward the central atoms along the axis (unit lattice)
+
+# fix 1 a3 move linear 0 0 0
+#fix 2 a2 move linear -0.25 0 0
+# fix 3 a1 nve
+
+
+dump 1 all custom 1 $p/dump.atom.* id type x y z vx vy vz fx fy fz c_pe
+
+timestep 0.001
+reset_timestep 0
+
+#minimize 0.0 1.0e-8 1000 100000
+
+#run 900 
+
+if "($s == atomistica) || ($s == atomisticax)" then "shell mv atomistica.log $p/atomistica1.log" 
+
+# Repeat the test by moving atom a1 away from the central atoms (unit lattice)
+#unfix 2
+# fix 2 a2 move linear 0.1 0 0 
+run 1
+
+if "($s == atomistica) || ($s == atomisticax)" then "shell mv atomistica.log $p/atomistica2.log" 

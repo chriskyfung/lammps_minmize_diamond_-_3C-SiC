@@ -1,0 +1,5 @@
+LAMMPS (8 Aug 2014)
+shell mkdir $p
+shell mkdir SiC_Erhart-Albe.tersoff
+log $p/lammps.log
+log SiC_Erhart-Albe.tersoff/lammps.log
